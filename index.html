@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtVault - Upload & Share Your Digital Art</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-gradient"></div>
+    
+    <header class="glass-header">
+        <div class="container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="24" height="24" rx="4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M10 18L14 14L18 18L22 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="20" cy="11" r="1.5" fill="currentColor"/>
+                </svg>
+                <span>ArtVault</span>
+            </div>
+            <nav>
+                <a href="#gallery">Gallery</a>
+                <a href="#upload">Upload</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title">Share Your Creative Vision</h1>
+                <p class="hero-subtitle">Upload, showcase, and discover stunning digital artwork from artists around the world</p>
+                <button class="cta-button" onclick="scrollToUpload()">
+                    <span>Start Uploading</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 4V16M10 4L6 8M10 4L14 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <section id="upload" class="upload-section">
+            <div class="container">
+                <div class="glass-card upload-card">
+                    <h2>Upload Your Artwork</h2>
+                    <p class="card-subtitle">Share your digital art with the community</p>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                        <div class="upload-content">
+                            <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="8" y="8" width="48" height="48" rx="8" stroke="currentColor" stroke-width="3"/>
+                                <path d="M32 20V44M32 20L24 28M32 20L40 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3>Drop your images here</h3>
+                            <p>or click to browse</p>
+                            <span class="file-types">PNG, JPG, GIF up to 10MB</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="artTitle">Artwork Title</label>
+                        <input type="text" id="artTitle" placeholder="Enter artwork title">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="artDescription">Description</label>
+                        <textarea id="artDescription" rows="3" placeholder="Describe your artwork..."></textarea>
+                    </div>
+
+                    <button class="submit-button" onclick="uploadArt()">
+                        <span>Upload Artwork</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="gallery-section">
+            <div class="container">
+                <h2 class="section-title">Featured Gallery</h2>
+                <div class="gallery-grid" id="galleryGrid">
+                     Gallery items will be dynamically added here 
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass-footer">
+        <div class="container">
+            <p>&copy; 2025 ArtVault. Empowering digital artists worldwide.</p>
+            <div class="footer-links">
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
