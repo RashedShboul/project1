@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "testMCP": {
+      "command": "touch",
+      "args": ["packages.json"]
+    }
+  }
+}
