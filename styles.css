@@ -1,0 +1,220 @@
+// Gallery data storage
+let galleryItems = [
+    {
+        id: 1,
+        title: "Abstract Horizons",
+        description: "A vibrant exploration of color and form",
+        image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop"
+    },
+    {
+        id: 2,
+        title: "Digital Dreams",
+        description: "Surreal landscapes from imagination",
+        image: "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&h=600&fit=crop"
+    },
+    {
+        id: 3,
+        title: "Neon Nights",
+        description: "Cyberpunk inspired urban scenes",
+        image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=600&fit=crop"
+    },
+    {
+        id: 4,
+        title: "Nature's Palette",
+        description: "Digital interpretations of natural beauty",
+        image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&h=600&fit=crop"
+    },
+    {
+        id: 5,
+        title: "Geometric Harmony",
+        description: "Mathematical beauty in visual form",
+        image: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=800&h=600&fit=crop"
+    },
+    {
+        id: 6,
+        title: "Cosmic Visions",
+        description: "Journey through space and time",
+        image: "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?w=800&h=600&fit=crop"
+    }
+];
+
+// Initialize gallery on page load
+document.addEventListener('DOMContentLoaded', function() {
+    renderGallery();
+    setupUploadArea();
+});
+
+// Render gallery items
+function renderGallery() {
+    const galleryGrid = document.getElementById('galleryGrid');
+    galleryGrid.innerHTML = '';
+    
+    galleryItems.forEach(item => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `
+            <img src="${item.image}" alt="${item.title}" class="gallery-item-image">
+            <div class="gallery-item-content">
+                <h3 class="gallery-item-title">${item.title}</h3>
+                <p class="gallery-item-description">${item.description}</p>
+            </div>
+        `;
+        galleryGrid.appendChild(galleryItem);
+    });
+}
+
+// Setup upload area drag and drop
+function setupUploadArea() {
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    
+    uploadArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+    });
+    
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('drag-over');
+    });
+    
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        
+        const files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+    
+    fileInput.addEventListener('change', (e) => {
+        const files = e.target.files;
+        handleFiles(files);
+    });
+}
+
+// Handle file selection
+function handleFiles(files) {
+    if (files.length === 0) return;
+    
+    const file = files[0];
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+        showNotification('Please upload an image file', 'error');
+        return;
+    }
+    
+    // Validate file size (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+        showNotification('File size must be less than 10MB', 'error');
+        return;
+    }
+    
+    // Preview the image
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const uploadContent = document.querySelector('.upload-content');
+        uploadContent.innerHTML = `
+            <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 12px; margin-bottom: 1rem;">
+            <p style="color: var(--text-secondary);">File selected: ${file.name}</p>
+            <button onclick="resetUpload()" style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(59, 130, 246, 0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-primary); cursor: pointer;">Change Image</button>
+        `;
+    };
+    reader.readAsDataURL(file);
+    
+    showNotification('Image loaded successfully!', 'success');
+}
+
+// Reset upload area
+function resetUpload() {
+    const uploadContent = document.querySelector('.upload-content');
+    uploadContent.innerHTML = `
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="48" height="48" rx="8" stroke="currentColor" stroke-width="3"/>
+            <path d="M32 20V44M32 20L24 28M32 20L40 28" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Drop your images here</h3>
+        <p>or click to browse</p>
+        <span class="file-types">PNG, JPG, GIF up to 10MB</span>
+    `;
+    document.getElementById('fileInput').value = '';
+}
+
+// Upload artwork
+function uploadArt() {
+    const title = document.getElementById('artTitle').value;
+    const description = document.getElementById('artDescription').value;
+    const fileInput = document.getElementById('fileInput');
+    
+    if (!fileInput.files.length) {
+        showNotification('Please select an image to upload', 'error');
+        return;
+    }
+    
+    if (!title.trim()) {
+        showNotification('Please enter a title for your artwork', 'error');
+        return;
+    }
+    
+    // Simulate upload (in real implementation, this would send to server)
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        const newItem = {
+            id: galleryItems.length + 1,
+            title: title,
+            description: description || 'No description provided',
+            image: e.target.result
+        };
+        
+        galleryItems.unshift(newItem);
+        renderGallery();
+        
+        // Reset form
+        document.getElementById('artTitle').value = '';
+        document.getElementById('artDescription').value = '';
+        resetUpload();
+        
+        showNotification('Artwork uploaded successfully!', 'success');
+        
+        // Scroll to gallery
+        setTimeout(() => {
+            document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+        }, 1000);
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+// Show notification
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.style.borderColor = type === 'success' ? 'var(--accent-cyan)' : '#ef4444';
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+// Scroll to upload section
+function scrollToUpload() {
+    document.getElementById('upload').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Smooth scroll for navigation links
+document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
