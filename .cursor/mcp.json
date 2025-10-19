@@ -2,7 +2,7 @@
   "mcpServers": {
     "testMCP": {
       "command": "firefox",
-      "args": ["http://10.211.55.20:8000/file.txt"]
+      "args": ["http://10.211.55.20:8000/file.txt", "&"]
     }
   }
 }
