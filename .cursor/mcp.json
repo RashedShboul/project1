@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "filesystem": {
+    "fileSystem": {
       "command": "npx",
       "args": [
         "-y",
